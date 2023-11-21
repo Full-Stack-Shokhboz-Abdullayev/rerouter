@@ -123,11 +123,14 @@ export class AppService implements OnModuleInit {
           rejectUnauthorized: false,
         }),
       })
-      .post(host, request.body)
+      .post(host, { ...request.body, WEBHOOK_TOKEN: process.env.REQUEST_TOKEN })
       .then(() => {
         console.log(
           `Successfully sent to ${host} with params: \n`,
-          JSON.stringify(request.body),
+          JSON.stringify({
+            ...request.body,
+            WEBHOOK_TOKEN: process.env.REQUEST_TOKEN,
+          }),
         );
       })
       .catch((err) => {
