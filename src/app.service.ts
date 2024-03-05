@@ -47,9 +47,11 @@ export class AppService implements OnModuleInit {
 
   webhook(body: Record<string, string>, headers: Record<string, string>) {
     setImmediate(() => {
-      for (const key of Object.keys(
-        this.cachedHosts,
-      ) as (keyof typeof this.cachedHosts)[])
+      const filtered = Object.keys(this.cachedHosts).filter(
+        (key) => this.cachedHosts[key].topic === headers['topic'],
+      ) as (keyof typeof this.cachedHosts)[];
+
+      for (const key of filtered)
         this.makeRequest({ headers, body }, this.cachedHosts[key].host);
     });
 
